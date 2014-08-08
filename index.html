@@ -5,58 +5,59 @@
         <title>RiverDeep - CA Demons</title>
         <script type="text/javascript" src="moment.js"></script>
         <script type="text/javascript">
-            function getData(){
+            function getData() {
                 var times = [];
-                var maxpoints = document.getElementById("resolution").value;;
-                var offset=document.getElementById("selector").value;
+                var maxpoints = document.getElementById("resolution").value;
+                ;
+                var offset = document.getElementById("selector").value;
                 //alert(offset);
                 var timenow = new Date().getTime();
-                var perpoint = offset/maxpoints;
+                var perpoint = offset / maxpoints;
                 var timestring = "";
                 var startdate;
                 var enddate;
-                for(var c=0; c<maxpoints; c++){
-                    var time=Math.round((timenow-offset)+perpoint*(c+1));
+                for (var c = 0; c < maxpoints; c++) {
+                    var time = Math.round((timenow - offset) + perpoint * (c + 1));
                     var dm = new Date(time);
-                    if(c===0){
+                    if (c === 0) {
                         startdate = moment(dm);
                     }
                     date = dm.getDate();
                     hours = dm.getHours();
-                    month = dm.getMonth()+1;
+                    month = dm.getMonth() + 1;
                     minutes = dm.getMinutes();
-                    qmins = 15*Math.round(minutes/15);
-                    if(qmins == 60){
+                    qmins = 15 * Math.round(minutes / 15);
+                    if (qmins == 60) {
                         qmins = 0;
                     }
                     var pad = "";
                     var hpad = "";
                     var mpad = "";
-                    if(date < 10){
-                        pad="0";
+                    if (date < 10) {
+                        pad = "0";
                     }
-                    if(hours < 10){
-                        hpad="0";
+                    if (hours < 10) {
+                        hpad = "0";
                     }
-                    if(month < 10){
-                        mpad="0";
+                    if (month < 10) {
+                        mpad = "0";
                     }
-                    timestring = timestring.concat(dm.getFullYear(),".",mpad,month,".",pad,date,".",hpad,hours,":",qmins,",");
+                    timestring = timestring.concat(dm.getFullYear(), ".", mpad, month, ".", pad, date, ".", hpad, hours, ":", qmins, ",");
                 }
                 enddate = moment(dm);
-                timestring=timestring.substr(0,timestring.length-1);
+                timestring = timestring.substr(0, timestring.length - 1);
                 console.log(timestring);
                 var xmlhttp = new XMLHttpRequest();
-                xmlhttp.onreadystatechange = function(){
-                    if(xmlhttp.readyState === 4 && xmlhttp.status === 200){
+                xmlhttp.onreadystatechange = function() {
+                    if (xmlhttp.readyState === 4 && xmlhttp.status === 200) {
                         //alert(xmlhttp.responseText);
                         var times = xmlhttp.responseText.split(",").reverse();
-                        if(Math.min.apply(Math,times) - 5 > 0){
-                            var dispmin = Math.round(Math.min.apply(Math,times)-5);
-                        }else{
+                        if (Math.min.apply(Math, times) - 5 > 0) {
+                            var dispmin = Math.round(Math.min.apply(Math, times) - 5);
+                        } else {
                             var dispmin = 0;
                         }
-                        var dispmax = Math.round(Math.max.apply(Math,times)+5);
+                        var dispmax = Math.round(Math.max.apply(Math, times) + 5);
                         //alert(new String(dispmax).concat(" in") + new String(dispmin).concat(" in"));
                         document.getElementById("top").textContent = new String(dispmax).concat(" in");
                         document.getElementById("bottom").textContent = new String(dispmin).concat(" in");
@@ -65,20 +66,20 @@
                         var dispdiff = dispmax - dispmin;
                         //alert(dispmax + " " + dispmin);
                         var pointpairs = [];
-                        for(var c=0; c!==times.length; c++){
-                            pointpairs[c] = new String("").concat(10+c*(600/(times.length-1)),",",300-(dispmin+(times[c]-dispmin)*300/dispdiff));
+                        for (var c = 0; c !== times.length; c++) {
+                            pointpairs[c] = new String("").concat(10 + c * (600 / (times.length - 1)), ",", 300 - (dispmin + (times[c] - dispmin) * 300 / dispdiff));
                         }
                         pointpairs[times.length] = "610,300";
-                        pointpairs[times.length+1] = "10,300";
-                        pointpairs[times.length+2] = pointpairs[0];
+                        pointpairs[times.length + 1] = "10,300";
+                        pointpairs[times.length + 2] = pointpairs[0];
                         //alert(pointpairs);
                         var pointstring = pointpairs.join(" ");
-                        document.getElementById("data").setAttribute("points",pointstring);
+                        document.getElementById("data").setAttribute("points", pointstring);
                     }
                 }
-                xmlhttp.open("POST","read.php",true);
-                xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
-                xmlhttp.send('times='+encodeURIComponent(timestring));
+                xmlhttp.open("POST", "read.php", true);
+                xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+                xmlhttp.send('times=' + encodeURIComponent(timestring));
                 //alert(time + JSON.stringify(times));
             }
         </script>
@@ -86,23 +87,24 @@
     <body onload="getData();">
     <center>
         <h2>Sudbury River Height</h2>
-    </center>
         <div>
-        <select id="selector" onchange="getData();">
-            <option value="86400000" label="Last Day" selected/>
-            <option value="604800000" label="Last Week"/>
-            <option value="2678400000" label="Last Month"/>
-            <option value="31536000000" label="Last Year"/>
-        </select><input type="text" id="resolution" value="50"/>
-        <button onclick="getData();">Reload</button>
-        <svg xmlns="http://www.w3.org/2000/svg" version="1.1">
-        <text id="top" x="630" y="10" transform="rotate(90 630,10)">null</text>
-        <text id="bottom" x="630" y="265" transform="rotate(90 630,265)">null</text>
-        <text id="start" x="5" y="315">starrrrrrrrrt</text>
-        <text id="end" x="485" y="315">ennnnnnnnnnnd</text>
-        <polygon id="data" points="10,100 60,100 110,100 160,100 210,100 260,100 310,100" style="fill:blue;stroke:black;stroke-width:2"/>
-        <rect id="databorder" x="0" y="0" width="620" height="300" style="fill:none;stroke:black;stroke-width:4;"/> 
-        </svg>
+            <select id="selector" onchange="getData();">
+                <option value="86400000" label="Last Day" selected/>
+                <option value="604800000" label="Last Week"/>
+                <option value="2678400000" label="Last Month"/>
+                <option value="31536000000" label="Last Year"/>
+            </select><input type="text" id="resolution" value="50"/>
+            <button onclick="getData();">Reload</button>
+            <br />
+            <svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="630" height="400">
+            <text id="top" x="630" y="10" transform="rotate(90 630,10)">null</text>
+            <text id="bottom" x="630" y="265" transform="rotate(90 630,265)">null</text>
+            <text id="start" x="5" y="315">starrrrrrrrrt</text>
+            <text id="end" x="485" y="315">ennnnnnnnnnnd</text>
+            <polygon id="data" points="10,100 60,100 110,100 160,100 210,100 260,100 310,100" style="fill:blue;stroke:black;stroke-width:2"/>
+            <rect id="databorder" x="0" y="0" width="620" height="300" style="fill:none;stroke:black;stroke-width:4;"/> 
+            </svg>
         </div>
-    </body>
+    </center>
+</body>
 </html>

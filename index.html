@@ -7,8 +7,9 @@
         <script type="text/javascript">
             function getData() {
                 var times = [];
+                var load = document.getElementById("load");
+                load.style.visibility = "visible";
                 var maxpoints = document.getElementById("resolution").value;
-                ;
                 var offset = document.getElementById("selector").value;
                 //alert(offset);
                 var timenow = new Date().getTime();
@@ -75,6 +76,7 @@
                         //alert(pointpairs);
                         var pointstring = pointpairs.join(" ");
                         document.getElementById("data").setAttribute("points", pointstring);
+                        load.style.visibility = "hidden";
                     }
                 }
                 xmlhttp.open("POST", "read.php", true);
@@ -95,12 +97,13 @@
                 <option value="31536000000" label="Last Year"/>
             </select><input type="text" id="resolution" value="50"/>
             <button onclick="getData();">Reload</button>
+            <img id="load" src="loading.gif" alt="Loading..." style="visibility: hidden; height: 20px; width: 20px;"/>
             <br />
-            <svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="630" height="400">
-            <text id="top" x="630" y="10" transform="rotate(90 630,10)">null</text>
-            <text id="bottom" x="630" y="265" transform="rotate(90 630,265)">null</text>
-            <text id="start" x="5" y="315">starrrrrrrrrt</text>
-            <text id="end" x="485" y="315">ennnnnnnnnnnd</text>
+            <svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="650" height="400">
+            <text id="top" x="630" y="10" transform="rotate(90 630,10)"></text>
+            <text id="bottom" x="630" y="265" transform="rotate(90 630,265)"></text>
+            <text id="start" x="5" y="315"></text>
+            <text id="end" x="485" y="315"></text>
             <polygon id="data" points="10,100 60,100 110,100 160,100 210,100 260,100 310,100" style="fill:blue;stroke:black;stroke-width:2"/>
             <rect id="databorder" x="0" y="0" width="620" height="300" style="fill:none;stroke:black;stroke-width:4;"/> 
             </svg>

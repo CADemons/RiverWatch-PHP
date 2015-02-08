@@ -95,8 +95,8 @@
                 <option value="604800000" label="Last Week"/>
                 <option value="2678400000" label="Last Month"/>
                 <option value="31536000000" label="Last Year"/>
-            </select><input type="text" id="resolution" value="50"/>
-            <button onclick="getData();">Reload</button>
+            </select><input type="text" id="resolution" value="50" onkeydown="if (event.keyCode == 13) document.getElementById('reload').click()"/>
+            <button id="reload" onclick="getData();">Reload</button>
             <img id="load" src="loading.gif" alt="Loading..." style="visibility: hidden; height: 20px; width: 20px;"/>
             <br />
             <svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="650" height="400">

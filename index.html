@@ -3,10 +3,12 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>RiverDeep - CA Demons</title>
-        <script type="text/javascript" src="moment.js"></script>
+        <script type="text/javascript" src="lib/jquery-1.11.1.js"></script>
+        <script type="text/javascript" src="lib/Chart.min.js"></script>
+        <script type="text/javascript" src="lib/moment.js"></script>
         <script type="text/javascript" src="index.js"></script>
     </head>
-    <body onload="getData();">
+    <body onload="init();">
     <center>
         <h2>Sudbury River Height</h2>
         <div>
@@ -15,7 +17,7 @@
                 <option value="604800000" label="Last Week"/>
                 <option value="2678400000" label="Last Month"/>
                 <option value="31536000000" label="Last Year"/>
-            </select><input type="text" id="resolution" value="50" onkeydown="if (event.keyCode == 13) document.getElementById('reload').click()"/>
+            </select><input type="text" id="resolution" value="50"/>
             <button id="reload" onclick="getData();">Reload</button>
             <img id="load" src="loading.gif" alt="Loading..." style="visibility: hidden; height: 20px; width: 20px;"/>
             <br />

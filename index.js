@@ -1,3 +1,5 @@
+var chartModel;
+
 function init() {
     $('#resolution').keydown(function (event) {
         var keypressed = event.keyCode || event.which;
@@ -5,6 +7,7 @@ function init() {
             getData();
         }
     });
+    chartModel = new Chart($("#heightChart").get(0).getContext("2d"));
     getData();
 }
 
@@ -50,40 +53,29 @@ function getData() {
     }
     enddate = moment(dm);
     timestring = timestring.substr(0, timestring.length - 1);
-    console.log(timestring);
     $.ajax({
         url: "read.php",
         type: "POST",
-        data: 'times=' + encodeURIComponent(timestring),
-        success: function(data, status, xhr) {
-            var times = data.split(",").reverse();
-            if(Math.min.apply(Math, times) - 5 > 0) {
-                var dispmin = Math.round(Math.min.apply(Math, times) - 5);
-            } else {
-                var dispmin = 0;
-            }
-            var dispmax = Math.round(Math.max.apply(Math, times) + 5);
-            //alert(new String(dispmax).concat(" in") + new String(dispmin).concat(" in"));
-            $("#top").text(new String(dispmax).concat(" in"));
-            $("#bottom").text(new String(dispmin).concat(" in"));
-            $("#start").text(startdate.format('ha MMM Do YYYY'));
-            $("#end").text(enddate.format('ha MMM Do YYYY'));
-            var dispdiff = dispmax - dispmin;
-            //alert(dispmax + " " + dispmin);
-            var pointpairs = [];
-            for (var c = 0; c !== times.length; c++) {
-                pointpairs[c] = new String("").concat(10 + c * (600 / (times.length - 1)), ",", 300 - (dispmin + (times[c] - dispmin) * 300 / dispdiff));
-            }
-            pointpairs[times.length] = "610,300";
-            pointpairs[times.length + 1] = "10,300";
-            pointpairs[times.length + 2] = pointpairs[0];
-            //alert(pointpairs);
-            var pointstring = pointpairs.join(" ");
-            console.log(pointstring);
-            $("#data").attr("points", pointstring);
+        data: "times=" + encodeURIComponent(timestring),
+        success: function (data, status, xhr) {
+            var heights = data.split(",").reverse();
+            var times = timestring.split(",");
+            var data = {
+                labels: times,
+                datasets: [{
+                        label: "Depth",
+                        fillColor: "rgba(70,117,182,0.2)",
+                        strokeColor: "rgba(70,117,182,1)",
+                        data: heights
+                    }]
+            };
+            chartModel.Line(data, {
+                animation: false,
+                beizerCurve: false,
+                pointDot: false
+            });
             load.css("visibility", "hidden");
         }
     });
     //alert(time + JSON.stringify(times));
 }
-            

@@ -13,11 +13,11 @@
         <h2>Sudbury River Height</h2>
         <div>
             <select id="selector" onchange="getData();">
-                <option value="86400000" label="Last Day" selected/>
+                <option value="86400000" label="Last Day"/>
                 <option value="604800000" label="Last Week"/>
                 <option value="2678400000" label="Last Month"/>
-                <option value="31536000000" label="Last Year"/>
-            </select><input type="text" id="resolution" value="50"/>
+                <option value="31536000000" label="Last Year" selected/>
+            </select><input type="text" id="resolution" value="500"/>
             <button id="reload" onclick="getData();">Reload</button>
             <img id="load" src="loading.gif" alt="Loading..." style="visibility: hidden; height: 20px; width: 20px;"/>
             <br />

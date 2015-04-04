@@ -1,10 +1,28 @@
+/* global moment */
+
+var _RiverWatch = {};
+
 function init() {
-    $('#resolution').keydown(function (event) {
-        var keypressed = event.keyCode || event.which;
-        if(keypressed === 13) {
-            getData();
+    $("#update").click(function () {
+        //getData();
+        if(!getEnteredStartDate().isValid() || !getEnteredEndDate().isValid()) {
+            alert("Invalid date");
+        } else if(getEnteredEndDate().isBefore(getEnteredStartDate(), "day")) {
+            alert("Start date may not be after end date");
+        } else if(getEnteredEndDate().isAfter(moment(), "day")) {
+            alert("Date range my not extend past caurrent date");
+        } else {
+            _RiverWatch.startDate = getEnteredStartDate();
+            _RiverWatch.endDate = getEnteredEndDate();
+            showDateDisplay();
         }
     });
+    $("#cancel").click(function () {
+        showDateDisplay();
+    });
+    $("#date-display").click(showDateBar);
+    initDateBar();
+    showDateDisplay();
     getData();
 }
 
@@ -55,7 +73,7 @@ function getData() {
         url: "read.php",
         type: "POST",
         data: 'times=' + encodeURIComponent(timestring),
-        success: function(data, status, xhr) {
+        success: function (data, status, xhr) {
             var times = data.split(",").reverse();
             if(Math.min.apply(Math, times) - 5 > 0) {
                 var dispmin = Math.round(Math.min.apply(Math, times) - 5);
@@ -86,4 +104,42 @@ function getData() {
     });
     //alert(time + JSON.stringify(times));
 }
-            
+
+function showDateDisplay() {
+    var startString = _RiverWatch.startDate.format("dddd MMMM Do YYYY");
+    var endString = _RiverWatch.endDate.format("dddd MMMM Do YYYY");
+    $("#date-display").html("From <b>" + startString + "</b> to <b>" + endString + "</b> (Click to edit)");
+    $("#date-bar").hide();
+    $("#date-display").show();
+}
+
+function showDateBar() {
+    $("#start-year").val(_RiverWatch.startDate.year());
+    $("#start-month").val(_RiverWatch.startDate.month());
+    $("#start-day").val(_RiverWatch.startDate.date());
+    $("#end-year").val(_RiverWatch.endDate.year());
+    $("#end-month").val(_RiverWatch.endDate.month());
+    $("#end-day").val(_RiverWatch.endDate.date());
+    $("#date-display").hide();
+    $("#date-bar").show();
+}
+
+function initDateBar() {
+    _RiverWatch.endDate = moment();
+    var year = moment().year();
+    var month = moment().month();
+    var date = moment().date();
+    if(month === 1 && date === 29) {
+        _RiverWatch.startDate = moment([year - 1, month, date - 1]);
+    } else {
+        _RiverWatch.startDate = moment([year - 1, month, date]);
+    }
+}
+
+function getEnteredStartDate() {
+    return moment([$("#start-year").val(), $("#start-month").val(), $("#start-day").val()]);
+}
+
+function getEnteredEndDate() {
+    return moment([$("#end-year").val(), $("#end-month").val(), $("#end-day").val()]);
+}

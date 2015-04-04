@@ -11,14 +11,116 @@
     <center>
         <h2>Sudbury River Height</h2>
         <div>
-            <select id="selector" onchange="getData();">
-                <option value="86400000" label="Last Day"/>
-                <option value="604800000" label="Last Week"/>
-                <option value="2678400000" label="Last Month"/>
-                <option value="31536000000" label="Last Year" selected/>
-            </select><input type="text" id="resolution" value="500"/>
-            <button id="reload" onclick="getData();">Reload</button>
-            <img id="load" src="loading.gif" alt="Loading..." style="visibility: hidden; height: 20px; width: 20px;"/>
+            <div id="date-bar">
+                Start:&nbsp;
+                <select id="start-month">
+                    <option value="0">Jan</option>
+                    <option value="1">Feb</option>
+                    <option value="2">Mar</option>
+                    <option value="3">Apr</option>
+                    <option value="4">May</option>
+                    <option value="5">Jun</option>
+                    <option value="6">Jul</option>
+                    <option value="7">Aug</option>
+                    <option value="8">Sep</option>
+                    <option value="9">Oct</option>
+                    <option value="10">Nov</option>
+                    <option value="11">Dec</option>
+                </select>
+                <select id="start-day">
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                    <option value="6">6</option>
+                    <option value="7">7</option>
+                    <option value="8">8</option>
+                    <option value="9">9</option>
+                    <option value="10">10</option>
+                    <option value="11">11</option>
+                    <option value="12">12</option>
+                    <option value="13">13</option>
+                    <option value="14">14</option>
+                    <option value="15">15</option>
+                    <option value="16">16</option>
+                    <option value="17">17</option>
+                    <option value="18">18</option>
+                    <option value="19">19</option>
+                    <option value="20">20</option>
+                    <option value="21">21</option>
+                    <option value="22">22</option>
+                    <option value="23">23</option>
+                    <option value="24">24</option>
+                    <option value="25">25</option>
+                    <option value="26">26</option>
+                    <option value="27">27</option>
+                    <option value="28">28</option>
+                    <option value="29">29</option>
+                    <option value="30">30</option>
+                    <option value="31">31</option>
+                </select>
+                <select id="start-year">
+                    <option value="2014">2014</option>
+                    <option value="2015">2015</option>
+                </select>
+                &nbsp;&nbsp;End:&nbsp;
+                <select id="end-month">
+                    <option value="0">Jan</option>
+                    <option value="1">Feb</option>
+                    <option value="2">Mar</option>
+                    <option value="3">Apr</option>
+                    <option value="4">May</option>
+                    <option value="5">Jun</option>
+                    <option value="6">Jul</option>
+                    <option value="7">Aug</option>
+                    <option value="8">Sep</option>
+                    <option value="9">Oct</option>
+                    <option value="10">Nov</option>
+                    <option value="11">Dec</option>
+                </select>
+                <select id="end-day">
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                    <option value="6">6</option>
+                    <option value="7">7</option>
+                    <option value="8">8</option>
+                    <option value="9">9</option>
+                    <option value="10">10</option>
+                    <option value="11">11</option>
+                    <option value="12">12</option>
+                    <option value="13">13</option>
+                    <option value="14">14</option>
+                    <option value="15">15</option>
+                    <option value="16">16</option>
+                    <option value="17">17</option>
+                    <option value="18">18</option>
+                    <option value="19">19</option>
+                    <option value="20">20</option>
+                    <option value="21">21</option>
+                    <option value="22">22</option>
+                    <option value="23">23</option>
+                    <option value="24">24</option>
+                    <option value="25">25</option>
+                    <option value="26">26</option>
+                    <option value="27">27</option>
+                    <option value="28">28</option>
+                    <option value="29">29</option>
+                    <option value="30">30</option>
+                    <option value="31">31</option>
+                </select>
+                <select id="end-year">
+                    <option value="2014">2014</option>
+                    <option value="2015">2015</option>
+                </select>&nbsp;&nbsp;
+                <button id="update">Update</button>
+                <button id="cancel">Cancel</button>
+                <img id="load" src="loading.gif" alt="Loading..." style="visibility: hidden; height: 20px; width: 20px;"/>
+            </div>
+            <div id="date-display"></div>
             <br />
             <svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="650" height="400">
             <text id="top" x="630" y="10" transform="rotate(90 630,10)"></text>
@@ -26,7 +128,7 @@
             <text id="start" x="5" y="315"></text>
             <text id="end" x="485" y="315"></text>
             <polygon id="data" points="10,100 60,100 110,100 160,100 210,100 260,100 310,100" style="fill:blue;stroke:black;stroke-width:2"/>
-            <rect id="databorder" x="0" y="0" width="620" height="300" style="fill:none;stroke:black;stroke-width:4;"/> 
+            <rect id="data-border" x="0" y="0" width="620" height="300" style="fill:none;stroke:black;stroke-width:4;"/> 
             </svg>
         </div>
     </center>

@@ -1,7 +1,8 @@
 <?php
+require_once 'checkpass.php';
 $timestring = $_POST['times'];
 $times = explode(",",$timestring);
-$con = mysqli_connect("localhost", "lberkley", "lincslink", "riverdeepdata");
+$con = mysqli_connect("localhost", "lberkley", $sqlpass, "riverdeepdata");
 $c=0;
 foreach ($times as $time) {
     $result = mysqli_query($con,'SELECT data FROM river WHERE date="'.$time.'"');

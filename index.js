@@ -14,6 +14,7 @@ function init() {
         } else {
             _RiverWatch.startDate = getEnteredStartDate();
             _RiverWatch.endDate = getEnteredEndDate();
+            _RiverWatch.maxPoints = $("#max-points").val();
             showDateDisplay();
         }
     });
@@ -120,6 +121,7 @@ function showDateBar() {
     $("#end-year").val(_RiverWatch.endDate.year());
     $("#end-month").val(_RiverWatch.endDate.month());
     $("#end-day").val(_RiverWatch.endDate.date());
+    $("#max-points").val(_RiverWatch.maxPoints);
     $("#date-display").hide();
     $("#date-bar").show();
 }
@@ -134,6 +136,7 @@ function initDateBar() {
     } else {
         _RiverWatch.startDate = moment([year - 1, month, date]);
     }
+    _RiverWatch.maxPoints = 10000;
 }
 
 function getEnteredStartDate() {

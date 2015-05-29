@@ -75,13 +75,12 @@ function getData() {
         type: "POST",
         data: 'times=' + encodeURIComponent(timestring),
         success: function (data, status, xhr) {
-            var times = data.split(",").reverse();
-            if(Math.min.apply(Math, times) - 5 > 0) {
-                var dispmin = Math.round(Math.min.apply(Math, times) - 5);
-            } else {
-                var dispmin = 0;
+            var times = data.split(",");
+            var dispmin = Math.round(Math.min.apply(Math, times)) - 5;
+            if(dispmin < 0) {
+                dispmin = 0;
             }
-            var dispmax = Math.round(Math.max.apply(Math, times) + 5);
+            var dispmax = Math.round(Math.max.apply(Math, times)) + 5;
             //alert(new String(dispmax).concat(" in") + new String(dispmin).concat(" in"));
             $("#top").text(new String(dispmax).concat(" in"));
             $("#bottom").text(new String(dispmin).concat(" in"));
@@ -90,7 +89,7 @@ function getData() {
             var dispdiff = dispmax - dispmin;
             //alert(dispmax + " " + dispmin);
             var pointpairs = [];
-            for (var c = 0; c !== times.length; c++) {
+            for(var c = 0; c !== times.length; c++) {
                 pointpairs[c] = new String("").concat(10 + c * (600 / (times.length - 1)), ",", 300 - (dispmin + (times[c] - dispmin) * 300 / dispdiff));
             }
             pointpairs[times.length] = "610,300";

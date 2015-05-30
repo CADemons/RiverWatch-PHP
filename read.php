@@ -1,5 +1,5 @@
 <?php
-require_once 'checkpass.php'; //File not uploaded to Github for security
+require_once 'checkpass.php';//File not uploaded to Github for security
 $sqluser = 'lberkley';
 //Password in chackpass file as $sqlpass
 $sqldb = 'riverdeepdata';

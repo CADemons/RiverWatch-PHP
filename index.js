@@ -10,7 +10,7 @@ function init() {
         } else if(getEnteredEndDate().isBefore(getEnteredStartDate(), "day")) {
             alert("Start date may not be after end date");
         } else if(getEnteredEndDate().isAfter(moment(), "day")) {
-            alert("Date range my not extend past caurrent date");
+            alert("Date range my not extend past current date");
         } else {
             _RiverWatch.startDate = getEnteredStartDate();
             if(getEnteredEndDate().isSame(moment(), "day")) {
@@ -19,7 +19,7 @@ function init() {
                 _RiverWatch.endDate = getEnteredEndDate().hours(23).minutes(59).seconds(59);
             }
             _RiverWatch.maxPoints = $("#max-points").val();
-            showDateDisplay();
+            getData();
         }
     });
     $("#cancel").click(function () {
@@ -27,14 +27,12 @@ function init() {
     });
     $("#date-display").click(showDateBar);
     initDateBar();
-    showDateDisplay();
     getData();
 }
 
 function getData() {
     var load = $("#load");
-    load.show();
-    var times = [];
+    load.css("visibility", "visible");
     var totalTime = _RiverWatch.endDate.diff(_RiverWatch.startDate, "minutes");
     var interval = 15;
     if(_RiverWatch.maxPoints > 0) {
@@ -42,7 +40,7 @@ function getData() {
     }
     var timestring = "";
     var points = 0;
-    var newDate = _RiverWatch.startDate;
+    var newDate = _RiverWatch.startDate.clone();
     while(!newDate.isAfter(_RiverWatch.endDate)) {
         newDate.subtract(newDate.minutes() % 15, "minutes")
         timestring = timestring.concat(newDate.format("YYYY.MM.DD.HH:m") + ",");
@@ -80,6 +78,7 @@ function getData() {
             console.log(pointstring);
             $("#data").attr("points", pointstring);
             load.css("visibility", "hidden");
+            showDateDisplay();
         }
     });
 }
